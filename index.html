@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Life Calendar</title>
+<style>
+  body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const width = parseInt(params.get("width")) || 1080;
+const height = parseInt(params.get("height")) || 2340;
+
+const canvas = document.getElementById("c");
+canvas.width = width;
+canvas.height = height;
+const ctx = canvas.getContext("2d");
+
+const today = new Date();
+const currentMonth = today.getMonth(); // 0-11
+
+const cols = 3;
+const rows = 4;
+
+const padding = 100;
+const dotSize = 150;
+const gap = 80;
+
+const startX = (width - (cols * dotSize + (cols-1)*gap)) / 2;
+const startY = (height - (rows * dotSize + (rows-1)*gap)) / 2;
+
+for(let i=0;i<12;i++){
+  const row = Math.floor(i/cols);
+  const col = i%cols;
+
+  const x = startX + col*(dotSize+gap);
+  const y = startY + row*(dotSize+gap);
+
+  ctx.beginPath();
+  ctx.arc(x+dotSize/2,y+dotSize/2,dotSize/2,0,2*Math.PI);
+
+  if(i <= currentMonth){
+    ctx.fillStyle = "#00ff88";
+  } else {
+    ctx.fillStyle = "#222";
+  }
+
+  ctx.fill();
+}
+</script>
+
+</body>
+</html>
